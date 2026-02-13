@@ -17,15 +17,23 @@ class AccountPlan(Enum):
     STUDENT = "student"
 
 class Account:
-    def __init__(self, accountNumber: str, holderName: str, balance: float):
+    def __init__(self, accountNumber: str, holderName: str, balance: float, password: str, email: str = None):
         # account info
         self.accountNumber = accountNumber
         self.holderName = holderName
         self.balance = balance
+        self.password = password
+        self.email = email
         # account default status 
         self.status = AccountStatus.ACTIVE
         self.plan = AccountPlan.STANDARD
 
+    def verifyPassword(self, enteredPassword: str) -> bool:
+        return self.password == enteredPassword
+
+    def setPassword(self, newPassword: str) -> None:
+        self.password = newPassword
+            
     # check if account is active
     def isActive(self) -> bool:
         return self.status == AccountStatus.ACTIVE

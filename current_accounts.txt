@@ -1,0 +1,1 @@
+00001 AdminUser active 1000.00 adminpass admin@email.com

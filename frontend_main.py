@@ -31,7 +31,30 @@ class FrontendMain:
             'disable': self.handleDisable,
             'delete': self.handleDelete,
             'changeplan': self.handleChangePlan,
+            'viewbalance': self.handleViewBalance,
         }
+    def handleViewBalance(self):
+        if not self.session.isLoggedIn():
+            print("You must be logged in!")
+            return
+
+        if self.session.isAdmin():
+            holderName = input("Enter account holder name: ").strip()
+        else:
+            holderName = self.session.currentUser
+
+        accountNumber = input("Enter account number: ").strip()
+        account = self.accountManager.getAccount(accountNumber)
+
+        if not account:
+            print("Account not found!")
+            return
+
+        if not self.session.isAdmin() and account.holderName != holderName:
+            print("You can only view your own account!")
+            return
+
+        print(f"Current Balance: ${account.balance:.2f}")
 
     def run(self):
         self.welcomeMessage() # display welcome message
@@ -61,36 +84,60 @@ class FrontendMain:
             self.commands[command]()
         else:
             print("Invalid command!")
-    
-    # Session commands
-    
+            
+    def forgotPassword(self):
+        email = input("Enter registered email: ").strip()
+        # Simulate email lookup
+        account = None
+        for acc in self.accountManager.accounts.values():
+            if hasattr(acc, 'email') and acc.email == email:
+                account = acc
+                break
+        if not account:
+            print("Email not found. Please try again.")
+            return
+        print("Verification successful.")
+        newPassword = input("Enter new password: ").strip()
+        account.setPassword(newPassword)
+        print("Password updated.")
 
-
-    # didnt complete
-
+    def changePasswordUsingOldPassword(self):
+        username = input("Enter username: ").strip()
+        account = self.accountManager.findByHolderName(username)
+        if not account:
+            print("User does not exist.")
+            return
+        oldPassword = input("Enter old password: ").strip()
+        if not account.verifyPassword(oldPassword):
+            print("Incorrect old password.")
+            return
+        newPassword = input("Enter new password: ").strip()
+        account.setPassword(newPassword)
+        print("Password updated.")
+        
     def handleLogin(self):
         if self.session.isLoggedIn():
             print("Already logged in!")
             return
 
         modeInput = input("Enter mode (admin/standard): ").strip().lower()
-
-        if modeInput == "admin":
-            mode = SessionMode.ADMIN
-        elif modeInput == "standard":
-            mode = SessionMode.STANDARD
-        else:
-            print("Invalid mode!")
-            return
+        mode = SessionMode.ADMIN if modeInput == "admin" else SessionMode.STANDARD
 
         username = input("Enter username: ").strip()
+        password = input("Enter password: ").strip()
 
-        if not username:
-            print("Username cannot be empty!")
+        account = self.accountManager.findByHolderName(username)
+
+        if not account:
+            print("User does not exist.")
+            return
+
+        if not account.verifyPassword(password):
+            print("Incorrect password.")
             return
 
         self.session.login(mode, username)
-        print(f"Login successful. Welcome {username}.")
+        print("Login successful.")
 
     def handleLogout(self):
         if not self.session.isLoggedIn():
@@ -103,7 +150,10 @@ class FrontendMain:
         # Write all recorded transactions to output file
         self.transactionManager.writeTransactionsToFile(self.transactionsFile)
 
-        print("Transactions saved to file.")
+        # Save accounts to file on logout
+        self.accountManager.saveAccountsToFile(self.accountsFile)
+
+        print("Transactions and accounts saved to file.")
 
 
     # Standard user commands
@@ -111,31 +161,49 @@ class FrontendMain:
         if not self.session.isLoggedIn():
             print("You must be logged in!")
             return
-        
+
         if not self.session.isAdmin():
             print("Only admins can create accounts!")
             return
-        
+
         try:
-            holderName = input("Enter account holder name: ")
-            if not holderName or len(holderName) > 20:
-                print("Name cannot be empty or longer than 20 characters!")
+            username = input("Enter username: ").strip()
+            if not username:
+                print("Username cannot be empty!")
                 return
-            balance = float(input("Enter starting balance ($): "))
+
+            password = input("Enter password: ").strip()
+            if len(password) < 6:
+                print("Password must be at least 6 characters!")
+                return
+
+            email = input("Enter email: ").strip()
+            if "@" not in email:
+                print("Invalid email format!")
+                return
+
+            balance = float(input("Enter starting balance: "))
             if balance < 0:
                 print("Balance cannot be negative!")
                 return
-            
-            account = self.accountManager.createAccount(holderName, balance)
+
+            account = self.accountManager.createAccount(
+                username, balance, password, email
+            )
+
             print("Account successfully created!")
             print(f"New Account Number: {account.accountNumber}")
 
-            # record transaction (05 is creation code)
-            transaction = Transaction("05", holderName, account.accountNumber, balance, "")
+            transaction = Transaction(
+                "05", username, account.accountNumber, balance, ""
+            )
             self.transactionManager.addTransaction(transaction)
 
+            # Save accounts to file after creation
+            self.accountManager.saveAccountsToFile(self.accountsFile)
+
         except ValueError:
-            print("Invalid amount entered!")
+            print("Invalid input!")
 
     def handleDeposit(self):
         if not self.session.isLoggedIn():

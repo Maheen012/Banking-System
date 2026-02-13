@@ -25,7 +25,8 @@ class Transaction:
         extra = f"{self.extra[:2]:<2}" 
 
         return f"{code} {holder} {acctNum} {amount} {extra}"
-    
+    def formatForFile(self) -> str:
+        return self.formatTransaction()
     # debugging
     def __str__(self):
         return f"{self.code} | {self.holderName} | {self.accountNumber} | {self.amount:.2f} | {self.extra}"
