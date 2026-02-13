@@ -1,7 +1,5 @@
 """
-Session
-
-Manages login state and enforces transaction limits per session.
+session.py - manage login state 
 """
 from enum import Enum
 class SessionMode(Enum):

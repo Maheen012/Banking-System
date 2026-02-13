@@ -1,8 +1,5 @@
 """
-AccountManager
-
-Manages all account objects.
-Loads accounts from file and performs account operations.
+account_manager.py - manages all account objects
 """
 
 from account import Account, AccountPlan
@@ -14,25 +11,29 @@ class AccountManager:
         self.nextAccountNumber = 1
 
     # create new account
-    def createAccount(self, holderName: str, balance: float, password: str, email: str = None) -> Account:
+    def createAccount(self, holderName: str, balance: float) -> Account:
         accountNumber = f"{self.nextAccountNumber:05d}"
-        account = Account(accountNumber, holderName, balance, password, email)
-        self.accounts[accountNumber] = account
+        account = Account(accountNumber, holderName, balance)
+        # self.accounts[accountNumber] = account - back end handels this
         self.nextAccountNumber += 1
         return account
+        
     # save accounts to file
     def saveAccountsToFile(self, filename: str):
         with open(filename, "w") as file:
             for account in self.accounts.values():
-                status = "active" if account.isActive() else "disabled"
-                line = f"{account.accountNumber} {account.holderName} {status} {account.balance:.2f} {account.password} {account.email}"
+                status = "A" if account.isActive() else "D"
+                line = f"{account.accountNumber} {account.holderName} {status} {account.balance:.2f}"
                 file.write(line + "\n")
+            file.write("END_OF_FILE\n")
+
     # find account by holder name
     def findByHolderName(self, holderName: str):
         for account in self.accounts.values():
             if account.holderName.lower() == holderName.lower():
                 return account
         return None
+    
     # find account by number
     def getAccount(self, accountNumber: str) -> Account:
         return self.accounts.get(accountNumber)
@@ -61,20 +62,24 @@ class AccountManager:
                     if not line or line.startswith("END_OF_FILE"):
                         break
                     parts = line.split()
-                    if len(parts) < 6:
+
+                    if len(parts) < 4:
                         continue
+
                     acctNum = parts[0]
-                    holderName = parts[1]
-                    status = parts[2]
-                    balance = float(parts[3])
-                    password = parts[4]
-                    email = parts[5]
-                    account = Account(acctNum, holderName, balance, password, email)
-                    if status.lower() == "disabled" or status.lower() == "d":
+                    holderName = " ".join(parts[1:-2])
+                    status = parts[-2]
+                    balance = float(parts[-1])
+                    account = Account(acctNum, holderName, balance)
+
+                    if status == "disabled" or status.lower() == "d":
                         account.disable()
+
                     self.accounts[acctNum] = account
+
                     num = int(acctNum)
                     if num >= self.nextAccountNumber:
                         self.nextAccountNumber = num + 1
+
         except FileNotFoundError:
             print(f"Account file '{filename}' not found.")

@@ -1,9 +1,5 @@
 """
-Account
-
-Represents a bank account.
-Stores account details including status and plan,
-and provides basic account operations.
+account.py - store and manage bank account information
 """
 
 from enum import Enum
@@ -13,26 +9,19 @@ class AccountStatus(Enum):
     DISABLED = "disabled"
 
 class AccountPlan(Enum):
-    STANDARD = "standard"
-    STUDENT = "student"
+    NON_STUDENT = "non-student" # "NP"
+    STUDENT = "student" # "SP"
 
 class Account:
-    def __init__(self, accountNumber: str, holderName: str, balance: float, password: str, email: str = None):
+    def __init__(self, accountNumber: str, holderName: str, balance: float):
         # account info
         self.accountNumber = accountNumber
         self.holderName = holderName
         self.balance = balance
-        self.password = password
-        self.email = email
+
         # account default status 
         self.status = AccountStatus.ACTIVE
-        self.plan = AccountPlan.STANDARD
-
-    def verifyPassword(self, enteredPassword: str) -> bool:
-        return self.password == enteredPassword
-
-    def setPassword(self, newPassword: str) -> None:
-        self.password = newPassword
+        self.plan = AccountPlan.NON_STUDENT 
             
     # check if account is active
     def isActive(self) -> bool:

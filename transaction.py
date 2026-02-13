@@ -1,8 +1,5 @@
 """
-Transaction
-
-Represents a single transaction record
-and formats it for output to the daily transactions file.
+transaction.py - Represents a single transaction record
 """
 
 # create transaction record
@@ -17,14 +14,14 @@ class Transaction:
     # format transaction for writing to file
     def formatTransaction(self) -> str:
         # CC_AAAAAAAAAAAAAAAAAAAA_NNNNN_PPPPPPPP_MM
-        code = f"{self.code:02}" 
+        code = f"{int(self.code):02}" 
         holder = f"{self.holderName[:20]:<20}"
 
         acctNum = str(self.accountNumber).zfill(5)
-        amount = f"{self.amount:08.2f}" 
+        amount = f"{abs(self.amount):08.2f}" 
         extra = f"{self.extra[:2]:<2}" 
-
-        return f"{code} {holder} {acctNum} {amount} {extra}"
+        return f"{code} {holder} {acctNum} {amount}{extra}"
+    
     def formatForFile(self) -> str:
         return self.formatTransaction()
     # debugging

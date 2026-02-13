@@ -1,8 +1,5 @@
 """
-TransactionManager
-
-Stores transactions during a session
-and writes them to the daily transactions file.
+transaction_manager.py - stores transactions during a session
 """
 from transaction import Transaction
 class TransactionManager:
@@ -21,7 +18,7 @@ class TransactionManager:
                 file.write(transaction.formatForFile() + "\n")
 
             # write end of transactions record
-            file.write("00                      00000 00000.00   \n")
+            file.write("00                      00000 00000.00  \n")
 
     # retrieve all transactions
     def getAllTransactions(self):

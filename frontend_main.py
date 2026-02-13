@@ -1,10 +1,5 @@
 """
-FrontendMain
-
-Controls execution of the ATM system.
-Reads commands from standard input.
-Loads accounts from current_accounts.txt.
-Writes daily transactions to transactions.txt.
+frontend_main.py - Controls execution of the ATM system
 """
 
 from account_manager import AccountManager
@@ -85,35 +80,6 @@ class FrontendMain:
         else:
             print("Invalid command!")
             
-    def forgotPassword(self):
-        email = input("Enter registered email: ").strip()
-        # Simulate email lookup
-        account = None
-        for acc in self.accountManager.accounts.values():
-            if hasattr(acc, 'email') and acc.email == email:
-                account = acc
-                break
-        if not account:
-            print("Email not found. Please try again.")
-            return
-        print("Verification successful.")
-        newPassword = input("Enter new password: ").strip()
-        account.setPassword(newPassword)
-        print("Password updated.")
-
-    def changePasswordUsingOldPassword(self):
-        username = input("Enter username: ").strip()
-        account = self.accountManager.findByHolderName(username)
-        if not account:
-            print("User does not exist.")
-            return
-        oldPassword = input("Enter old password: ").strip()
-        if not account.verifyPassword(oldPassword):
-            print("Incorrect old password.")
-            return
-        newPassword = input("Enter new password: ").strip()
-        account.setPassword(newPassword)
-        print("Password updated.")
         
     def handleLogin(self):
         if self.session.isLoggedIn():
@@ -123,21 +89,18 @@ class FrontendMain:
         modeInput = input("Enter mode (admin/standard): ").strip().lower()
         mode = SessionMode.ADMIN if modeInput == "admin" else SessionMode.STANDARD
 
-        username = input("Enter username: ").strip()
-        password = input("Enter password: ").strip()
+        if mode == SessionMode.STANDARD:
+            username = input("Enter account holder name: ").strip()
+            account = self.accountManager.findByHolderName(username)
 
-        account = self.accountManager.findByHolderName(username)
+            if not account:
+                print("User does not exist.")
+                return
+            self.session.login(mode, username)
+        else:
+            self.session.login(mode,"admin")
 
-        if not account:
-            print("User does not exist.")
-            return
-
-        if not account.verifyPassword(password):
-            print("Incorrect password.")
-            return
-
-        self.session.login(mode, username)
-        print("Login successful.")
+        print("Login is successful!")
 
     def handleLogout(self):
         if not self.session.isLoggedIn():
@@ -150,47 +113,28 @@ class FrontendMain:
         # Write all recorded transactions to output file
         self.transactionManager.writeTransactionsToFile(self.transactionsFile)
 
-        # Save accounts to file on logout
-        self.accountManager.saveAccountsToFile(self.accountsFile)
 
         print("Transactions and accounts saved to file.")
 
 
     # Standard user commands
     def handleCreate(self):
-        if not self.session.isLoggedIn():
-            print("You must be logged in!")
-            return
-
-        if not self.session.isAdmin():
+        if not self.session.isLoggedIn() or not self.session.isAdmin():
             print("Only admins can create accounts!")
             return
 
         try:
-            username = input("Enter username: ").strip()
-            if not username:
-                print("Username cannot be empty!")
-                return
-
-            password = input("Enter password: ").strip()
-            if len(password) < 6:
-                print("Password must be at least 6 characters!")
-                return
-
-            email = input("Enter email: ").strip()
-            if "@" not in email:
-                print("Invalid email format!")
+            username = input("Enter account holder name: ").strip()
+            if len(username) > 20:
+                print("Name must be 20 characters or less!")
                 return
 
             balance = float(input("Enter starting balance: "))
-            if balance < 0:
-                print("Balance cannot be negative!")
+            if balance < 0 or balance > 99999.99:
+                print("Balance must be between $0.00 and $99,999.99!")
                 return
 
-            account = self.accountManager.createAccount(
-                username, balance, password, email
-            )
-
+            account = self.accountManager.createAccount(username, balance)
             print("Account successfully created!")
             print(f"New Account Number: {account.accountNumber}")
 
@@ -199,8 +143,6 @@ class FrontendMain:
             )
             self.transactionManager.addTransaction(transaction)
 
-            # Save accounts to file after creation
-            self.accountManager.saveAccountsToFile(self.accountsFile)
 
         except ValueError:
             print("Invalid input!")
@@ -297,7 +239,7 @@ class FrontendMain:
             print(f"Current Balance: ${account.balance:.2f}")
 
             # record transaction (03 is paybill code)
-            transaction = Transaction("03", holderName, account.accountNumber, amount, validPayees[payeeCode])
+            transaction = Transaction("03", holderName, account.accountNumber, amount, payeeCode.upper())
             self.transactionManager.addTransaction(transaction)
 
         except ValueError:
@@ -453,38 +395,41 @@ class FrontendMain:
         transaction = Transaction("06", account.holderName, accountNumber, 0.0, "")
         self.transactionManager.addTransaction(transaction)
 
-# handleChangePlan changes the payment plan of an account and record a change plan transaction. Its also an admin only operation
     def handleChangePlan(self):
-# Ensure a user is logged in
-        if not self.session.isLoggedIn():
-            print("You must be logged in!")
-            return
-# Only admins are allowed to change account plans
-        if not self.session.isAdmin():
+        # Ensure a user is logged in & is admin
+        if not self.session.isLoggedIn() or not self.session.isAdmin():
             print("Only admins can change account plans!")
             return
 
         accountNumber = input("Enter account number: ").strip()
-        newPlanInput = input("Enter new plan (S for Student, N for Normal): ").strip().upper()
-
         account = self.accountManager.getAccount(accountNumber)
- # Validate account existence
+
+        if not account:
+            print("Account not found!")
+            return
+        
+        newPlanInput = input("Enter new plan (S for Student, N for Non-student): ").strip().upper()
+
+        # Validate account existence
+        account = self.accountManager.getAccount(accountNumber)
         if not account:
             print("Account not found!")
             return
             
-# Determine correct AccountPlan enum value
+        # Determine correct AccountPlan enum value
         if newPlanInput == "S":
             newPlan = AccountPlan.STUDENT
         elif newPlanInput == "N":
-            newPlan = AccountPlan.NORMAL
+            newPlan = AccountPlan.NON_STUDENT
         else:
             print("Invalid plan type!")
             return
- # Update account plan through AccountManager
+        
+        # Update account plan through AccountManager
         self.accountManager.changeAccountPlan(accountNumber, newPlan)
-        print("Account plan updated successfully.")
- # Record change-plan transaction (08 = change plan code)
+        print("Account plan updated successfully!")
+
+        # Record change-plan transaction (08 = change plan code)
         transaction = Transaction("08", account.holderName, accountNumber, 0.0, newPlanInput)
         self.transactionManager.addTransaction(transaction)
         
