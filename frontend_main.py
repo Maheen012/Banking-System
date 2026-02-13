@@ -11,7 +11,8 @@ from account_manager import AccountManager
 from session import Session, SessionMode
 from transaction import Transaction
 from transaction_manager import TransactionManager
-# import other necessary modules and classes
+from account import AccountPlan
+
 
 class FrontendMain:
     def __init__(self):
@@ -331,14 +332,97 @@ class FrontendMain:
         except ValueError:
             print("Invalid amount entered!")
 
+# Admin Only Operations
+# handleDisable will disable an existing account, and record a disable transaction. Its also an admin only operation
     def handleDisable(self):
-        
+    # Ensures a user is logged in before proceeding
+        if not self.session.isLoggedIn():
+            print("You must be logged in!")
+            return
+    # Only admins are allowed to disable accounts
+        if not self.session.isAdmin():
+            print("Only admins can disable accounts!")
+            return
+    # Prompt admin for account number to disable
+        accountNumber = input("Enter account number to disable: ").strip()
+        account = self.accountManager.getAccount(accountNumber)
+    # Validate that account exists
+        if not account:
+            print("Account not found!")
+            return
+     # Prevent disabling an already disabled account
+        if not account.isActive():
+            print("Account already disabled!")
+            return
+
+        self.accountManager.disableAccount(accountNumber)
+        print("Account disabled successfully.")
+    # Record disable transaction (07 = disable code)
+        transaction = Transaction("07", account.holderName, accountNumber, 0.0, "")
+        self.transactionManager.addTransaction(transaction)
+
+# handleDelete deletes an existing account and record a delete transaction. Its also an admin only operation.
     def handleDelete(self):
-        
+ # Ensure a user is logged in before proceeding
+        if not self.session.isLoggedIn():
+            print("You must be logged in!")
+            return
+ # Only admins are allowed to delete accounts
+        if not self.session.isAdmin():
+            print("Only admins can delete accounts!")
+            return
+
+        accountNumber = input("Enter account number to delete: ").strip()
+        account = self.accountManager.getAccount(accountNumber)
+# Validate account existence
+        if not account:
+            print("Account not found!")
+            return
+
+        self.accountManager.deleteAccount(accountNumber)
+        print("Account deleted successfully.")
+ # Record delete transaction (06 = delete code)
+        transaction = Transaction("06", account.holderName, accountNumber, 0.0, "")
+        self.transactionManager.addTransaction(transaction)
+
+# handleChangePlan changes the payment plan of an account and record a change plan transaction. Its also an admin only operation
     def handleChangePlan(self):
+# Ensure a user is logged in
+        if not self.session.isLoggedIn():
+            print("You must be logged in!")
+            return
+# Only admins are allowed to change account plans
+        if not self.session.isAdmin():
+            print("Only admins can change account plans!")
+            return
+
+        accountNumber = input("Enter account number: ").strip()
+        newPlanInput = input("Enter new plan (S for Student, N for Normal): ").strip().upper()
+
+        account = self.accountManager.getAccount(accountNumber)
+ # Validate account existence
+        if not account:
+            print("Account not found!")
+            return
+            
+# Determine correct AccountPlan enum value
+        if newPlanInput == "S":
+            newPlan = AccountPlan.STUDENT
+        elif newPlanInput == "N":
+            newPlan = AccountPlan.NORMAL
+        else:
+            print("Invalid plan type!")
+            return
+ # Update account plan through AccountManager
+        self.accountManager.changeAccountPlan(accountNumber, newPlan)
+        print("Account plan updated successfully.")
+ # Record change-plan transaction (08 = change plan code)
+        transaction = Transaction("08", account.holderName, accountNumber, 0.0, newPlanInput)
+        self.transactionManager.addTransaction(transaction)
         
 
 
 if __name__ == "__main__":
     frontend = FrontendMain()
+
     frontend.run()
