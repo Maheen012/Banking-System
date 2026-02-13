@@ -1,3 +1,11 @@
+"""
+Account
+
+Represents a bank account.
+Stores account details including status and plan,
+and provides basic account operations.
+"""
+
 from enum import Enum
 
 class AccountStatus(Enum):

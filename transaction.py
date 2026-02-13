@@ -1,3 +1,10 @@
+"""
+Transaction
+
+Represents a single transaction record
+and formats it for output to the daily transactions file.
+"""
+
 # create transaction record
 class Transaction:
     def __init__(self, code: str, holderName: str, accountNumber: str, amount: float = 0.0, extra: str = ""):

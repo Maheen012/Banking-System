@@ -1,3 +1,9 @@
+"""
+TransactionManager
+
+Stores transactions during a session
+and writes them to the daily transactions file.
+"""
 from transaction import Transaction
 class TransactionManager:
     def __init__(self):
@@ -12,7 +18,7 @@ class TransactionManager:
     def writeTransactionsToFile(self, filename: str):
         with open(filename, "w") as file:
             for transaction in self.transactions:
-                file.write(transaction.formatTransaction() + "\n")
+                file.write(transaction.formatForFile() + "\n")
 
             # write end of transactions record
             file.write("00                      00000 00000.00   \n")

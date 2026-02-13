@@ -222,6 +222,7 @@ class FrontendMain:
                 return
             
             account.adjustBalance(-amount)
+            self.session.recordPayBill(amount)
             print("Bill payment was successful!")
             print(f"Payee: {validPayees[payeeCode]}")
             print(f"Current Balance: ${account.balance:.2f}")
@@ -271,6 +272,7 @@ class FrontendMain:
                 return
 
             account.adjustBalance(-amount)
+            self.session.recordWithdraw(amount)
 
             print("Withdrawal successful.")
 
@@ -319,6 +321,7 @@ class FrontendMain:
 
             fromAccount.adjustBalance(-amount)
             toAccount.adjustBalance(amount)
+            self.session.recordTransfer(amount)
 
             print("Transfer successful.")
 

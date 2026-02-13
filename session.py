@@ -1,3 +1,8 @@
+"""
+Session
+
+Manages login state and enforces transaction limits per session.
+"""
 from enum import Enum
 class SessionMode(Enum):
     STANDARD = "standard"
@@ -7,7 +12,7 @@ class Session:
     def __init__(self):
         self.loggedIn = False
         self.mode = None 
-        self.currentUser = " "
+        self.currentUser = None
         self.withdrawTotal = 0.0
         self.transferTotal = 0.0
         self.paybillTotal = 0.0
@@ -23,7 +28,7 @@ class Session:
     def logout(self) -> None:
         self.loggedIn = False
         self.mode = None
-        self.currentUser = " "  
+        self.currentUser = None
         self.resetTotals()
 
     # check if logged in
