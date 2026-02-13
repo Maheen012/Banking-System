@@ -1,3 +1,12 @@
+"""
+FrontendMain
+
+Controls execution of the ATM system.
+Reads commands from standard input.
+Loads accounts from current_accounts.txt.
+Writes daily transactions to transactions.txt.
+"""
+
 from account_manager import AccountManager
 from session import Session, SessionMode
 from transaction import Transaction
@@ -38,6 +47,8 @@ class FrontendMain:
 
     def processCommand(self, command: str):
         if command in ["exit","quit"]:
+            self.transactionManager.writeTransactionsToFile(self.transactionsFile)
+            print("Transactions saved to file.")
             print("Thank you for using the ATM. Goodbye!")
             exit(0)
 
@@ -56,9 +67,42 @@ class FrontendMain:
 
     # didnt complete
 
+    def handleLogin(self):
+        if self.session.isLoggedIn():
+            print("Already logged in!")
+            return
 
+        modeInput = input("Enter mode (admin/standard): ").strip().lower()
 
+        if modeInput == "admin":
+            mode = SessionMode.ADMIN
+        elif modeInput == "standard":
+            mode = SessionMode.STANDARD
+        else:
+            print("Invalid mode!")
+            return
 
+        username = input("Enter username: ").strip()
+
+        if not username:
+            print("Username cannot be empty!")
+            return
+
+        self.session.login(mode, username)
+        print(f"Login successful. Welcome {username}.")
+
+    def handleLogout(self):
+        if not self.session.isLoggedIn():
+            print("No user currently logged in!")
+            return
+
+        print("Logging out...")
+        self.session.logout()
+
+        # Write all recorded transactions to output file
+        self.transactionManager.writeTransactionsToFile(self.transactionsFile)
+
+        print("Transactions saved to file.")
 
 
     # Standard user commands
@@ -192,9 +236,98 @@ class FrontendMain:
 
     # Admin commands (commented out)
     def handleWithdraw(self):
-        
+        if not self.session.isLoggedIn():
+            print("You must be logged in!")
+            return
+
+        if self.session.isAdmin():
+            holderName = input("Enter account holder name: ").strip()
+        else:
+            holderName = self.session.currentUser
+        accountNumber = input("Enter account number: ").strip()
+
+        try:
+            amount = float(input("Enter withdrawal amount ($): "))
+            if amount <= 0:
+                print("Amount must be positive!")
+                return
+
+            if not self.session.canWithdraw(amount):
+                print("Withdrawal limit exceeded!")
+                return
+
+            account = self.accountManager.getAccount(accountNumber)
+
+            if not account:
+                print("Account not found!")
+                return
+
+            if not self.session.isAdmin() and account.holderName != holderName:
+                print("You can only withdraw from your own account!")
+                return
+
+            if account.balance < amount:
+                print("Insufficient funds!")
+                return
+
+            account.adjustBalance(-amount)
+
+            print("Withdrawal successful.")
+
+            transaction = Transaction("01", holderName, accountNumber, amount, "")
+            self.transactionManager.addTransaction(transaction)
+
+        except ValueError:
+            print("Invalid amount entered!")
+            
     def handleTransfer(self):
-        
+        if not self.session.isLoggedIn():
+            print("You must be logged in!")
+            return
+
+        if self.session.isAdmin():
+            holderName = input("Enter account holder name: ").strip()
+        else:
+            holderName = self.session.currentUser
+        fromAccountNum = input("Enter source account number: ").strip()
+        toAccountNum = input("Enter destination account number: ").strip()
+
+        try:
+            amount = float(input("Enter transfer amount ($): "))
+            if amount <= 0:
+                print("Amount must be positive!")
+                return
+
+            if not self.session.canTransfer(amount):
+                print("Transfer limit exceeded!")
+                return
+
+            fromAccount = self.accountManager.getAccount(fromAccountNum)
+            toAccount = self.accountManager.getAccount(toAccountNum)
+
+            if not fromAccount or not toAccount:
+                print("Invalid account number!")
+                return
+
+            if not self.session.isAdmin() and fromAccount.holderName != holderName:
+                print("You can only transfer from your own account!")
+                return
+
+            if fromAccount.balance < amount:
+                print("Insufficient funds!")
+                return
+
+            fromAccount.adjustBalance(-amount)
+            toAccount.adjustBalance(amount)
+
+            print("Transfer successful.")
+
+            transaction = Transaction("02", holderName, fromAccountNum, amount, toAccountNum)
+            self.transactionManager.addTransaction(transaction)
+
+        except ValueError:
+            print("Invalid amount entered!")
+
     def handleDisable(self):
         
     def handleDelete(self):
