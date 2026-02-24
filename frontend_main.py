@@ -1,6 +1,29 @@
-"""
-frontend_main.py - Controls execution of the ATM system
-"""
+# =========================================================
+# Program: frontend_main.py
+# Course: CSCI 3060U - Winter 2025
+# Group: Class Project Group 27
+# =========================================================
+# Purpose:
+#   This program simulates the Front End of a banking system ATM.
+#   It reads transaction commands from terminal input,
+#   processes them one at a time, updates account balances, and
+#   generates a daily bank account transaction file at the end of a session.
+#   It supports both standard and admin (privileged) modes.
+#
+# Input Files:
+#   - currentaccounts.txt               contains current bank account records
+#   - Test input files (.txt)           contain sequences of transactions for testing
+#
+# Output Files:
+#   - transout.atf                      daily transaction file containing all
+#                                       transactions performed during the session
+#   - Terminal log / Outputs (.out)     captures everything printed to terminal
+#                                       during execution (used for testing)
+#
+# How to Run:
+#   - From terminal:
+#       python frontend_main.py currentaccounts.txt transout.atf
+# =========================================================
 
 from account_manager import AccountManager
 from session import Session, SessionMode
