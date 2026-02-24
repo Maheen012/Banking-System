@@ -1,0 +1,5 @@
+FromUsername: user01
+FromAccountID: ACC123
+UserMode: Standard
+FromAccountBalance: 2000.00
+TransferAmount: 300.00

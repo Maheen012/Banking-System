@@ -1,0 +1,5 @@
+Username: user01
+AccountID: ACC123
+UserMode: Standard
+CurrentBalance: 0.00
+WithdrawAmount: 50.00

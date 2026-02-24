@@ -1,0 +1,4 @@
+Action: CreateAccount
+Username: newUser
+Password: newUserPass123
+Email: newuser@email.com

@@ -1,0 +1,7 @@
+FromUsername: admin01
+FromAccountID: ACC999
+ToAccountID: ACC888
+UserMode: Admin
+FromAccountBalance: 5000.00
+ToAccountBalance: 200.00
+TransferAmount: 3000.00

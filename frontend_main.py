@@ -7,6 +7,7 @@ from session import Session, SessionMode
 from transaction import Transaction
 from transaction_manager import TransactionManager
 from account import AccountPlan
+import sys
 
 
 class FrontendMain:
@@ -436,6 +437,15 @@ class FrontendMain:
 
 
 if __name__ == "__main__":
+    if len(sys.argv) != 3:
+        print("Usage: python frontend_main.py <accounts_file> <transactions_file>")
+        sys.exit(1)
+
+    accounts_file = sys.argv[1]
+    transactions_file = sys.argv[2]
+
     frontend = FrontendMain()
+    frontend.accountsFile = accounts_file
+    frontend.transactionsFile = transactions_file
 
     frontend.run()

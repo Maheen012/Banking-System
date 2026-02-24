@@ -1,0 +1,3 @@
+Action: ForgotPassword
+Email: user01@email.com
+VerificationCode: 654321

@@ -1,0 +1,6 @@
+FromUsername: user01
+FromAccountID: ACC123
+ToAccountID: INVALID999
+UserMode: Standard
+FromAccountBalance: 1500.00
+TransferAmount: 300.00
