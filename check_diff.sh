@@ -28,9 +28,9 @@ do
     echo "Checking transaction file for test $base..."
     diff transout.atf expected/$base.etf
     if [ $? -eq 0 ]; then
-        echo "✔ Transaction file $base PASSED"
+        echo "Transaction file $base PASSED"
     else
-        echo "✘ Transaction file $base FAILED"
+        echo "Transaction file $base FAILED"
     fi
     echo "----------------------------------"
 done
@@ -42,9 +42,9 @@ do
     echo "Checking terminal log for test $base..."
     diff outputs/$base.out expected/$base.out
     if [ $? -eq 0 ]; then
-        echo "✔ Terminal log $base PASSED"
+        echo "Terminal log $base PASSED"
     else
-        echo "✘ Terminal log $base FAILED"
+        echo "Terminal log $base FAILED"
     fi
     echo "----------------------------------"
 

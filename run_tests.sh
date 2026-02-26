@@ -15,7 +15,7 @@
 #
 # Required files/directories:
 #   - frontend_main.py         main Python program
-#   - inputs/*.txt             test input files
+#   - inputs/.txt              test input files
 #   - current_accounts.txt     current bank account file
 #   - outputs/                 directory where outputs will be stored
 # =========================================================
