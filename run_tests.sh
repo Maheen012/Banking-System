@@ -1,3 +1,25 @@
+# =========================================================
+# Script: run_tests.sh
+# Purpose: Automatically run the frontend_main.py program
+#          on all test input files and generate output files.
+#
+# How it works:
+#   - Reads each .txt file in the 'inputs/' directory.
+#   - Runs the Python ATM frontend program for each input.
+#   - Saves the daily transaction file (.atf) in 'outputs/'.
+#   - Saves the terminal log (.out) in 'outputs/'.
+#
+# How to run:
+#   chmod +x run_tests.sh
+#   ./run_tests.sh
+#
+# Required files/directories:
+#   - frontend_main.py         main Python program
+#   - inputs/*.txt             test input files
+#   - current_accounts.txt     current bank account file
+#   - outputs/                 directory where outputs will be stored
+# =========================================================
+
 #!/bin/bash
 
 # Create outputs directory if it doesn't exist

@@ -22,7 +22,7 @@
 #
 # How to Run:
 #   - From terminal:
-#       python frontend_main.py currentaccounts.txt transout.atf
+#       python frontend_main.py current_accounts.txt transout.atf
 # =========================================================
 
 from account_manager import AccountManager
