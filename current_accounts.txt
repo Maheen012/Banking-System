@@ -1,4 +1,4 @@
-00001 AdminUser A 950.00
-00002 John Doe A 50.00
+00001 AdminUser A 10000.00
+00002 John Doe A 100.00
 00003 Mary Jane D 500.00
 END_OF_FILE

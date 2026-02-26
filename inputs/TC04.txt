@@ -1,2 +1,4 @@
-Username: unknownUser
-Password: test123
+login
+standard
+unknownUser
+logout

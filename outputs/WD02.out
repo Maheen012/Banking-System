@@ -1,9 +1,14 @@
 ================================
 Welcome to the Bank ATM System!
 ================================
-ATM> Invalid command!
-ATM> Invalid command!
-ATM> Invalid command!
-ATM> Invalid command!
-ATM> Invalid command!
-ATM> 
+ATM> login
+Enter mode (admin/standard): standard
+Enter account holder name: John Doe
+Login is successful!
+ATM> withdraw
+Enter account number: 00002
+Enter withdrawal amount ($): 600.00
+Withdrawal limit exceeded!
+ATM> logout
+Logging out...
+Transactions and accounts saved to file.

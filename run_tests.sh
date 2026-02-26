@@ -32,8 +32,20 @@ do
 
     echo "Running test $base..."
 
-    python3 frontend_main.py current_accounts.txt outputs/$base.atf \
-        < "$file" > outputs/$base.out
+
+    python3 frontend_main.py current_accounts.txt outputs/$base.atf "$file" > outputs/$base.out
+
+    # Compare output to expected result
+    if [ -f expected/$base.atf ]; then
+        if diff -q outputs/$base.atf expected/$base.atf > /dev/null; then
+            echo "$base: PASS"
+        else
+            echo "$base: FAIL"
+            diff outputs/$base.atf expected/$base.atf
+        fi
+    else
+        echo "No expected output for $base, skipping comparison."
+    fi
 
 done
 

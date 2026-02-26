@@ -1,6 +1,7 @@
 ================================
 Welcome to the Bank ATM System!
 ================================
-ATM> Invalid command!
-ATM> Invalid command!
-ATM> 
+ATM> NewPassword: StrongPass456
+Invalid command!
+ATM> ConfirmPassword: StrongPass456
+Invalid command!

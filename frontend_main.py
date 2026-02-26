@@ -40,7 +40,6 @@ class FrontendMain:
         self.session = Session()
         self.accountsFile = "current_accounts.txt"
         self.transactionsFile = "transactions.txt"
-
         self.commands = {
             'create': self.handleCreate,
             'deposit': self.handleDeposit,
@@ -52,17 +51,30 @@ class FrontendMain:
             'changeplan': self.handleChangePlan,
             'viewbalance': self.handleViewBalance,
         }
+        self._input_iter = None
+
+    def get_input(self, prompt=""):
+        if self._input_iter is not None:
+            try:
+                value = next(self._input_iter)
+                print(f"{prompt}{value}")
+                return value
+            except StopIteration:
+                print("[ERROR] Not enough input lines in command file for prompts.")
+                sys.exit(1)
+        else:
+            return input(prompt)
     def handleViewBalance(self):
         if not self.session.isLoggedIn():
             print("You must be logged in!")
             return
 
         if self.session.isAdmin():
-            holderName = input("Enter account holder name: ").strip()
+            holderName = self.get_input("Enter account holder name: ").strip()
         else:
             holderName = self.session.currentUser
 
-        accountNumber = input("Enter account number: ").strip()
+        accountNumber = self.get_input("Enter account number: ").strip()
         account = self.accountManager.getAccount(accountNumber)
 
         if not account:
@@ -75,13 +87,29 @@ class FrontendMain:
 
         print(f"Current Balance: ${account.balance:.2f}")
 
-    def run(self):
+    def run(self, command_file=None):
         self.welcomeMessage() # display welcome message
         self.accountManager.loadAccountsFromFile(self.accountsFile) # load accounts from file
 
-        while True:
-            command = input("ATM> ").strip().lower()
-            self.processCommand(command)
+        if command_file:
+            try:
+                with open(command_file, 'r') as f:
+                    commands = [line.strip() for line in f if line.strip()]
+                self._input_iter = iter(commands)
+                while True:
+                    try:
+                        command = next(self._input_iter)
+                        print(f"ATM> {command}")  # Echo command for logs
+                    except StopIteration:
+                        break
+                    self.processCommand(command.lower())
+            except FileNotFoundError:
+                print(f"Command file '{command_file}' not found.")
+                sys.exit(1)
+        else:
+            while True:
+                command = input("ATM> ").strip().lower()
+                self.processCommand(command)
 
     def welcomeMessage(self):
         print("================================")
@@ -110,11 +138,19 @@ class FrontendMain:
             print("Already logged in!")
             return
 
-        modeInput = input("Enter mode (admin/standard): ").strip().lower()
-        mode = SessionMode.ADMIN if modeInput == "admin" else SessionMode.STANDARD
+        while True:
+            modeInput = self.get_input("Enter mode (admin/standard): ").strip().lower()
+            if modeInput == "admin":
+                mode = SessionMode.ADMIN
+                break
+            elif modeInput == "standard":
+                mode = SessionMode.STANDARD
+                break
+            else:
+                print("Mode incorrect, please enter 'admin' or 'standard'.")
 
         if mode == SessionMode.STANDARD:
-            username = input("Enter account holder name: ").strip()
+            username = self.get_input("Enter account holder name: ").strip()
             account = self.accountManager.findByHolderName(username)
 
             if not account:
@@ -148,12 +184,12 @@ class FrontendMain:
             return
 
         try:
-            username = input("Enter account holder name: ").strip()
+            username = self.get_input("Enter account holder name: ").strip()
             if len(username) > 20:
                 print("Name must be 20 characters or less!")
                 return
 
-            balance = float(input("Enter starting balance: "))
+            balance = float(self.get_input("Enter starting balance: "))
             if balance < 0 or balance > 99999.99:
                 print("Balance must be between $0.00 and $99,999.99!")
                 return
@@ -166,7 +202,6 @@ class FrontendMain:
                 "05", username, account.accountNumber, balance, ""
             )
             self.transactionManager.addTransaction(transaction)
-
 
         except ValueError:
             print("Invalid input!")
@@ -277,13 +312,14 @@ class FrontendMain:
             return
 
         if self.session.isAdmin():
-            holderName = input("Enter account holder name: ").strip()
+            holderName = self.get_input("Enter account holder name: ").strip()
         else:
             holderName = self.session.currentUser
-        accountNumber = input("Enter account number: ").strip()
+        accountNumber = self.get_input("Enter account number: ").strip()
 
         try:
-            amount = float(input("Enter withdrawal amount ($): "))
+            amount_str = self.get_input("Enter withdrawal amount ($): ").strip()
+            amount = float(amount_str)
             if amount <= 0:
                 print("Amount must be positive!")
                 return
@@ -323,14 +359,14 @@ class FrontendMain:
             return
 
         if self.session.isAdmin():
-            holderName = input("Enter account holder name: ").strip()
+            holderName = self.get_input("Enter account holder name: ").strip()
         else:
             holderName = self.session.currentUser
-        fromAccountNum = input("Enter source account number: ").strip()
-        toAccountNum = input("Enter destination account number: ").strip()
+        fromAccountNum = self.get_input("Enter source account number: ").strip()
+        toAccountNum = self.get_input("Enter destination account number: ").strip()
 
         try:
-            amount = float(input("Enter transfer amount ($): "))
+            amount = float(self.get_input("Enter transfer amount ($): "))
             if amount <= 0:
                 print("Amount must be positive!")
                 return
@@ -460,15 +496,17 @@ class FrontendMain:
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Usage: python frontend_main.py <accounts_file> <transactions_file>")
+    # Usage: python frontend_main.py <accounts_file> <transactions_file> [<command_file>]
+    if len(sys.argv) not in (3, 4):
+        print("Usage: python frontend_main.py <accounts_file> <transactions_file> [<command_file>]")
         sys.exit(1)
 
     accounts_file = sys.argv[1]
     transactions_file = sys.argv[2]
+    command_file = sys.argv[3] if len(sys.argv) == 4 else None
 
     frontend = FrontendMain()
     frontend.accountsFile = accounts_file
     frontend.transactionsFile = transactions_file
 
-    frontend.run()
+    frontend.run(command_file)

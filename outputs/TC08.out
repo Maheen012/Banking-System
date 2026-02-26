@@ -1,7 +1,9 @@
 ================================
 Welcome to the Bank ATM System!
 ================================
-ATM> Invalid command!
-ATM> Invalid command!
-ATM> Invalid command!
-ATM> 
+ATM> Action: ForgotPassword
+Invalid command!
+ATM> Email: user01@email.com
+Invalid command!
+ATM> VerificationCode: 654321
+Invalid command!

@@ -1,6 +1,8 @@
-FromUsername: user01
-FromAccountID: INVALID123
-ToAccountID: ACC456
-UserMode: Standard
-FromAccountBalance: 1500.00
-TransferAmount: 300.00
+login
+standard
+John Doe
+transfer
+INVALID123
+00001
+300.00
+logout

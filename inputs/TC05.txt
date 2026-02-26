@@ -1,2 +1,2 @@
-Action: MakeTransaction
-Amount: 100
+withdraw
+transfer

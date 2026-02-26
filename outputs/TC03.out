@@ -1,6 +1,7 @@
 ================================
 Welcome to the Bank ATM System!
 ================================
-ATM> Invalid command!
-ATM> Invalid command!
-ATM> 
+ATM> Username: user01
+Invalid command!
+ATM> Password: wrongpassword
+Invalid command!

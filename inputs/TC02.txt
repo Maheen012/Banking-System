@@ -1,4 +1,3 @@
 login
-standard
-ZZZ_NOT_A_USER
-exit
+admin
+logout

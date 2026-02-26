@@ -1,5 +1,7 @@
-Username: admin01
-AccountID: ACC999
-UserMode: Admin
-CurrentBalance: 3000.00
-WithdrawAmount: 1500.00
+login
+admin
+withdraw
+AdminUser
+00001
+1500.00
+logout

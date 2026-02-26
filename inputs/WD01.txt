@@ -1,5 +1,7 @@
-Username: user01
-AccountID: ACC123
-UserMode: Standard
-CurrentBalance: 1000.00
-WithdrawAmount: 200.00
+login
+standard
+John Doe
+withdraw
+00002
+200.00
+logout

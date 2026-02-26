@@ -1,3 +1,5 @@
-Username: user01
-Password: user01pass
-LoginAttempt: Second
+login
+standard
+John Doe
+login
+admin

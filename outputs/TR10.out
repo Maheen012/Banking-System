@@ -1,11 +1,17 @@
 ================================
 Welcome to the Bank ATM System!
 ================================
-ATM> Invalid command!
-ATM> Invalid command!
-ATM> Invalid command!
-ATM> Invalid command!
-ATM> Invalid command!
-ATM> Invalid command!
-ATM> Invalid command!
-ATM> 
+ATM> FromUsername: user01
+Invalid command!
+ATM> FromAccountID: ACC123
+Invalid command!
+ATM> ToAccountID: ACC456
+Invalid command!
+ATM> UserMode: Standard
+Invalid command!
+ATM> FromAccountBalance: 2000.00
+Invalid command!
+ATM> ToAccountBalance: 1000.00
+Invalid command!
+ATM> TransferAmount: 400.00
+Invalid command!

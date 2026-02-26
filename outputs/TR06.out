@@ -1,11 +1,15 @@
 ================================
 Welcome to the Bank ATM System!
 ================================
-ATM> Invalid command!
-ATM> Invalid command!
-ATM> Invalid command!
-ATM> Invalid command!
-ATM> Invalid command!
-ATM> Invalid command!
-ATM> Invalid command!
-ATM> 
+ATM> login
+Enter mode (admin/standard): standard
+Enter account holder name: John Doe
+Login is successful!
+ATM> transfer
+Enter source account number: 00002
+Enter destination account number: 00001
+Enter transfer amount ($): 500.00
+Insufficient funds!
+ATM> logout
+Logging out...
+Transactions and accounts saved to file.

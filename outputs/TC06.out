@@ -1,7 +1,11 @@
 ================================
 Welcome to the Bank ATM System!
 ================================
-ATM> Invalid command!
-ATM> Invalid command!
-ATM> Invalid command!
-ATM> 
+ATM> login
+Enter mode (admin/standard): standard
+Enter account holder name: John Doe
+Login is successful!
+ATM> login
+Already logged in!
+ATM> admin
+Invalid command!

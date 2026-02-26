@@ -1,6 +1,9 @@
 ================================
 Welcome to the Bank ATM System!
 ================================
-ATM> Invalid command!
-ATM> Invalid command!
-ATM> 
+ATM> login
+Enter mode (admin/standard): standard
+Enter account holder name: unknownUser
+User does not exist.
+ATM> logout
+No user currently logged in!

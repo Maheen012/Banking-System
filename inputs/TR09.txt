@@ -1,5 +1,8 @@
-FromUsername: user01
-FromAccountID: ACC123
-UserMode: Standard
-FromAccountBalance: 2000.00
-TransferAmount: 300.00
+login
+standard
+John Doe
+transfer
+00002
+   
+300.00
+logout
