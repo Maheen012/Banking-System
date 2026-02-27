@@ -1,5 +1,5 @@
 login
 admin03
-A
-disable ACC200
+disable
+ACC200
 logout
