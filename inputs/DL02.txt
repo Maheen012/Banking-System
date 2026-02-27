@@ -1,4 +1,5 @@
-Username: user01
-UserMode: Standard
-AccountID: ACC100
-Action: Delete
+login
+standard
+delete
+ACC100
+logout
