@@ -1,6 +1,6 @@
-Username: admin04
-UserMode: Admin
-AccountID: ACC300
-CurrentPlan: SP
-NewPlan: NP
-Action: ChangePlan
+login
+admin
+changeplan
+ACC300
+NP
+logout
