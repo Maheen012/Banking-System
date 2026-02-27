@@ -1,4 +1,0 @@
-Username: user02
-UserMode: Standard
-AccountID: ACC200
-Action: Disable

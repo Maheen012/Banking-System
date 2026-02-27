@@ -1,3 +1,4 @@
-Username: user04
-UserMode: Standard
-Action: Logout
+login
+standard
+John Doe
+logout
