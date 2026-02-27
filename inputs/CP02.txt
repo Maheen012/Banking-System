@@ -1,6 +1,0 @@
-login
-standard
-changeplan
-ACC300
-NP
-logout
