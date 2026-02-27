@@ -1,0 +1,4 @@
+Username: user05
+UserMode: Standard
+Action: Logout
+NextAction: Withdrawal

@@ -1,0 +1,3 @@
+Username: user04
+UserMode: Standard
+Action: Logout
