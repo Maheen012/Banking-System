@@ -1,5 +1,5 @@
-Username: admin03
-UserMode: Admin
-AccountID: ACC200
-AccountStatus: Active
-Action: Disable
+login
+admin03
+A
+disable ACC200
+logout
