@@ -1,2 +1,7 @@
-Transfer denied.
-Error: Standard users cannot transfer more than 1000.00 per transaction.
+================================
+Welcome to the Bank ATM System!
+================================
+Login is successful!
+Transfer limit exceeded!
+Logging out...
+Transactions and accounts saved to file.

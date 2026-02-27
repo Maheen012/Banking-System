@@ -1,0 +1,6 @@
+login
+admin
+create
+ThisNameIsWayTooLongForThisRequirement
+logout
+exit

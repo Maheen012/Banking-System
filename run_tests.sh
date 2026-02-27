@@ -33,7 +33,7 @@ do
     echo "Running test $base..."
 
 
-    python3 frontend_main.py current_accounts.txt outputs/$base.atf "$file" > outputs/$base.out
+    python3 frontend_main.py current_accounts.txt outputs/$base.atf < "$file" > outputs/$base.out
 
     # Compare output to expected result
     if [ -f expected/$base.atf ]; then

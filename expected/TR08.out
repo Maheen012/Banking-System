@@ -1,5 +1,8 @@
+================================
+Welcome to the Bank ATM System!
+================================
+Login is successful!
 Transfer successful.
-Amount transferred: 1000.00
-From account new balance: 0.00
-To account new balance: 1000.00
-Transaction recorded successfully.
+Current Balance: $0.00
+Logging out...
+Transactions and accounts saved to file.

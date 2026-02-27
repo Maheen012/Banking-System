@@ -1,0 +1,7 @@
+login
+admin
+create
+John Doe
+1000.00
+logout
+exit

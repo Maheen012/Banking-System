@@ -1,14 +1,8 @@
 ================================
 Welcome to the Bank ATM System!
 ================================
-ATM> login
-Enter mode (admin/standard): admin
 Login is successful!
-ATM> create
-Enter account holder name: newUser
-Enter starting balance: 100
 Account successfully created!
 New Account Number: 00004
-ATM> logout
 Logging out...
 Transactions and accounts saved to file.

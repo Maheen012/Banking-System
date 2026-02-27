@@ -1,11 +1,8 @@
 ================================
 Welcome to the Bank ATM System!
 ================================
-ATM> login
-Enter mode (admin/standard): standard
-Enter account holder name: John Doe
 Login is successful!
-ATM> login
 Already logged in!
-ATM> admin
 Invalid command!
+Transactions saved to file.
+Thank you for using the ATM. Goodbye!

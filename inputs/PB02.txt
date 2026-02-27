@@ -1,0 +1,9 @@
+login
+standard
+John Doe
+paybill
+00002
+XYZ
+200.00
+logout
+exit

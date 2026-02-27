@@ -1,0 +1,9 @@
+login
+standard
+John Doe
+paybill
+00002
+EC
+1500.00
+logout
+exit

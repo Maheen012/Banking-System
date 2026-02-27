@@ -4,5 +4,5 @@ John Doe
 transfer
 00002
 00001
-350.00
+-350.00
 logout

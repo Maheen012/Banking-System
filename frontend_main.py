@@ -53,28 +53,17 @@ class FrontendMain:
         }
         self._input_iter = None
 
-    def get_input(self, prompt=""):
-        if self._input_iter is not None:
-            try:
-                value = next(self._input_iter)
-                print(f"{prompt}{value}")
-                return value
-            except StopIteration:
-                print("[ERROR] Not enough input lines in command file for prompts.")
-                sys.exit(1)
-        else:
-            return input(prompt)
     def handleViewBalance(self):
         if not self.session.isLoggedIn():
             print("You must be logged in!")
             return
 
         if self.session.isAdmin():
-            holderName = self.get_input("Enter account holder name: ").strip()
+            holderName = input().strip()
         else:
             holderName = self.session.currentUser
 
-        accountNumber = self.get_input("Enter account number: ").strip()
+        accountNumber = input().strip()
         account = self.accountManager.getAccount(accountNumber)
 
         if not account:
@@ -90,26 +79,13 @@ class FrontendMain:
     def run(self, command_file=None):
         self.welcomeMessage() # display welcome message
         self.accountManager.loadAccountsFromFile(self.accountsFile) # load accounts from file
-
-        if command_file:
-            try:
-                with open(command_file, 'r') as f:
-                    commands = [line.strip() for line in f if line.strip()]
-                self._input_iter = iter(commands)
-                while True:
-                    try:
-                        command = next(self._input_iter)
-                        print(f"ATM> {command}")  # Echo command for logs
-                    except StopIteration:
-                        break
-                    self.processCommand(command.lower())
-            except FileNotFoundError:
-                print(f"Command file '{command_file}' not found.")
-                sys.exit(1)
-        else:
+        
+        try:
             while True:
-                command = input("ATM> ").strip().lower()
+                command = input().strip().lower()
                 self.processCommand(command)
+        except EOFError:
+            pass
 
     def welcomeMessage(self):
         print("================================")
@@ -139,7 +115,7 @@ class FrontendMain:
             return
 
         while True:
-            modeInput = self.get_input("Enter mode (admin/standard): ").strip().lower()
+            modeInput = input().strip().lower()
             if modeInput == "admin":
                 mode = SessionMode.ADMIN
                 break
@@ -150,7 +126,7 @@ class FrontendMain:
                 print("Mode incorrect, please enter 'admin' or 'standard'.")
 
         if mode == SessionMode.STANDARD:
-            username = self.get_input("Enter account holder name: ").strip()
+            username = input().strip()
             account = self.accountManager.findByHolderName(username)
 
             if not account:
@@ -184,12 +160,12 @@ class FrontendMain:
             return
 
         try:
-            username = self.get_input("Enter account holder name: ").strip()
+            username = input().strip()
             if len(username) > 20:
                 print("Name must be 20 characters or less!")
                 return
 
-            balance = float(self.get_input("Enter starting balance: "))
+            balance = float(input())
             if balance < 0 or balance > 99999.99:
                 print("Balance must be between $0.00 and $99,999.99!")
                 return
@@ -212,14 +188,14 @@ class FrontendMain:
             return
         
         if self.session.isAdmin():
-            holderName = input("Enter account holder name: ").strip()
+            holderName = input().strip()
         else:
             holderName = self.session.currentUser
 
-        accountNumber = input("Enter account number: ")
+        accountNumber = input().strip()
         
         try:
-            amount = float(input("Enter deposit amount($): "))
+            amount = float(input())
             if amount <= 0:
                 print("Deposit amount must be positive!")
                 return
@@ -235,7 +211,7 @@ class FrontendMain:
                 return
 
             # account.adjustBalance(amount)
-            print("Deposit was successful! Funds will be availble in next session.")
+            print("Deposit was successful! Funds will be available in next session.")
 
             # record transaction (04 is deposit code)
             transaction = Transaction("04", holderName, account.accountNumber, amount, "")
@@ -250,11 +226,11 @@ class FrontendMain:
             return
         
         if self.session.isAdmin():
-            holderName = input("Enter account holder name: ").strip()
+            holderName = input().strip()
         else:
             holderName = self.session.currentUser
 
-        accountNumber = input("Enter account number: ")
+        accountNumber = input().strip()
         
         # valid payees and print options
         validPayees = {
@@ -263,13 +239,13 @@ class FrontendMain:
             'fi': 'Fast Internet, Inc. (FI)'
         }
 
-        payeeCode = input("Enter payee code (EC, CQ, FI): ").strip().lower()
+        payeeCode = input().strip().lower()
         if payeeCode not in validPayees:
             print("Invalid payee code!")
             return
         
         try:
-            amount = float(input("Enter bill amount($): "))
+            amount = float(input())
             if amount <= 0:
                 print("Bill amount must be positive!")
                 return
@@ -312,14 +288,13 @@ class FrontendMain:
             return
 
         if self.session.isAdmin():
-            holderName = self.get_input("Enter account holder name: ").strip()
+            holderName = input().strip()
         else:
             holderName = self.session.currentUser
-        accountNumber = self.get_input("Enter account number: ").strip()
+        accountNumber = input().strip()
 
         try:
-            amount_str = self.get_input("Enter withdrawal amount ($): ").strip()
-            amount = float(amount_str)
+            amount = float(input())
             if amount <= 0:
                 print("Amount must be positive!")
                 return
@@ -359,14 +334,14 @@ class FrontendMain:
             return
 
         if self.session.isAdmin():
-            holderName = self.get_input("Enter account holder name: ").strip()
+            holderName = input().strip()
         else:
             holderName = self.session.currentUser
-        fromAccountNum = self.get_input("Enter source account number: ").strip()
-        toAccountNum = self.get_input("Enter destination account number: ").strip()
+        fromAccountNum = input().strip()
+        toAccountNum = input().strip()
 
         try:
-            amount = float(self.get_input("Enter transfer amount ($): "))
+            amount = float(input())
             if amount <= 0:
                 print("Amount must be positive!")
                 return
@@ -414,7 +389,7 @@ class FrontendMain:
             print("Only admins can disable accounts!")
             return
     # Prompt admin for account number to disable
-        accountNumber = input("Enter account number to disable: ").strip()
+        accountNumber = input().strip()
         account = self.accountManager.getAccount(accountNumber)
     # Validate that account exists
         if not account:
@@ -442,7 +417,7 @@ class FrontendMain:
             print("Only admins can delete accounts!")
             return
 
-        accountNumber = input("Enter account number to delete: ").strip()
+        accountNumber = input().strip()
         account = self.accountManager.getAccount(accountNumber)
 # Validate account existence
         if not account:
@@ -461,14 +436,14 @@ class FrontendMain:
             print("Only admins can change account plans!")
             return
 
-        accountNumber = input("Enter account number: ").strip()
+        accountNumber = input().strip()
         account = self.accountManager.getAccount(accountNumber)
 
         if not account:
             print("Account not found!")
             return
         
-        newPlanInput = input("Enter new plan (S for Student, N for Non-student): ").strip().upper()
+        newPlanInput = input().strip().upper()
 
         # Validate account existence
         account = self.accountManager.getAccount(accountNumber)

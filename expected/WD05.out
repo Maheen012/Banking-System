@@ -1,2 +1,7 @@
-Withdrawal denied.
-Error: Account balance cannot be negative.
+================================
+Welcome to the Bank ATM System!
+================================
+Login is successful!
+Amount must be positive!
+Logging out...
+Transactions and accounts saved to file.

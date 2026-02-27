@@ -1,2 +1,7 @@
-Withdrawal denied.
-Error: Standard users cannot withdraw more than 500.00 per transaction.
+================================
+Welcome to the Bank ATM System!
+================================
+Login is successful!
+Withdrawal limit exceeded!
+Logging out...
+Transactions and accounts saved to file.

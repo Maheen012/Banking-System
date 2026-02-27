@@ -1,3 +1,7 @@
-Login failed.
-Error: Account does not exist.
-Please create an account.
+================================
+Welcome to the Bank ATM System!
+================================
+User does not exist.
+No user currently logged in!
+Transactions saved to file.
+Thank you for using the ATM. Goodbye!

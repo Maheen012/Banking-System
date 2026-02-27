@@ -1,3 +1,6 @@
 __pycache__/
 # Ignore generated transaction output file
+outputs/ 
+# Ignore generated output files
 transout.atf
+*.pyc

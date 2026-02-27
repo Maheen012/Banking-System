@@ -3,3 +3,4 @@ standard
 John Doe
 login
 admin
+exit

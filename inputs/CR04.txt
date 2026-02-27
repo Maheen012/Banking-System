@@ -1,0 +1,7 @@
+login
+admin
+create
+Jane Smith
+100000.00
+logout
+exit

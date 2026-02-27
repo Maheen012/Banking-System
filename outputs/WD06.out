@@ -1,14 +1,7 @@
 ================================
 Welcome to the Bank ATM System!
 ================================
-ATM> login
-Enter mode (admin/standard): standard
-Enter account holder name: John Doe
 Login is successful!
-ATM> withdraw
-Enter account number: 00001
-Enter withdrawal amount ($): 100.00
 You can only withdraw from your own account!
-ATM> logout
 Logging out...
 Transactions and accounts saved to file.

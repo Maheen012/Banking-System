@@ -1,2 +1,0 @@
-NewPassword: StrongPass456
-ConfirmPassword: StrongPass456

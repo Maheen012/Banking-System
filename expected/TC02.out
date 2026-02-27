@@ -1,5 +1,6 @@
-Login successful.
-User mode: Admin
-Welcome, admin01.
-Displaying privileged dashboard.
-All transactions enabled.
+================================
+Welcome to the Bank ATM System!
+================================
+Login is successful!
+Logging out...
+Transactions and accounts saved to file.

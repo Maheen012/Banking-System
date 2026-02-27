@@ -1,9 +1,7 @@
 ================================
 Welcome to the Bank ATM System!
 ================================
-ATM> login
-Enter mode (admin/standard): standard
-Enter account holder name: unknownUser
 User does not exist.
-ATM> logout
 No user currently logged in!
+Transactions saved to file.
+Thank you for using the ATM. Goodbye!

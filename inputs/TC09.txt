@@ -1,2 +1,0 @@
-NewPassword: user01pass
-ConfirmPassword: user01pass

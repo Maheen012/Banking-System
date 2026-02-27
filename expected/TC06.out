@@ -1,3 +1,8 @@
-Login rejected.
-Error: User already logged in.
-Please logout before logging in again.
+================================
+Welcome to the Bank ATM System!
+================================
+Login is successful!
+Already logged in!
+Invalid command!
+Transactions saved to file.
+Thank you for using the ATM. Goodbye!

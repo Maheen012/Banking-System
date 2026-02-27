@@ -1,7 +1,7 @@
 ================================
 Welcome to the Bank ATM System!
 ================================
-ATM> withdraw
 You must be logged in!
-ATM> transfer
 You must be logged in!
+Transactions saved to file.
+Thank you for using the ATM. Goodbye!

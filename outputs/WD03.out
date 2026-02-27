@@ -1,14 +1,7 @@
 ================================
 Welcome to the Bank ATM System!
 ================================
-ATM> login
-Enter mode (admin/standard): admin
 Login is successful!
-ATM> withdraw
-Enter account holder name: AdminUser
-Enter account number: 00001
-Enter withdrawal amount ($): 1500.00
 Withdrawal successful.
-ATM> logout
 Logging out...
 Transactions and accounts saved to file.

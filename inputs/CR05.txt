@@ -1,0 +1,11 @@
+login
+admin
+create
+Temp User
+500.00
+deposit
+Temp User
+00005
+100.00
+logout
+exit

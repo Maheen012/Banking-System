@@ -1,9 +1,6 @@
 ================================
 Welcome to the Bank ATM System!
 ================================
-ATM> login
-Enter mode (admin/standard): admin
 Login is successful!
-ATM> logout
 Logging out...
 Transactions and accounts saved to file.
