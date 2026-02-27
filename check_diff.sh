@@ -19,6 +19,20 @@
 
 #!/bin/bash
 
+# Checks the daily transaction files
+for file in expected/*.etf
+do
+    base=$(basename "$file" .etf)
+    echo "Checking daily transaction files for test $base..."
+    diff outputs/$base.atf expected/$base.etf
+    if [ $? -eq 0 ]; then
+        echo "Transaction file $base PASSED"
+    else
+        echo "Transaction file $base FAILED"
+    fi
+    echo "----------------------------------"
+done
+
 # Check terminal logs
 for file in expected/*.out
 do
