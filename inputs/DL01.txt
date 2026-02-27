@@ -1,4 +1,5 @@
-Username: admin01
-UserMode: Admin
-AccountID: ACC100
-Action: Delete
+login
+admin
+delete
+ACC100
+logout
