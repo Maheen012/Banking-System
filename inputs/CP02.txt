@@ -1,6 +1,6 @@
 login
-admin
+standard
 changeplan
 ACC300
-XX
+NP
 logout
