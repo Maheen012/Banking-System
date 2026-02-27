@@ -1,6 +1,0 @@
-login
-standard
-logout
-withdraw
-ACC100
-50
