@@ -1,4 +1,6 @@
-Username: user05
-UserMode: Standard
-Action: Logout
-NextAction: Withdrawal
+login
+standard
+logout
+withdraw
+ACC100
+50
