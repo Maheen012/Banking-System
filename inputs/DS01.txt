@@ -1,5 +1,5 @@
 login
-admin03
+admin
 disable
 ACC200
 logout

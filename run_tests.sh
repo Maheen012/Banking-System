@@ -36,12 +36,12 @@ do
     python frontend_main.py current_accounts.txt outputs/$base.atf < "$file" > outputs/$base.out
 
     # Compare output to expected result
-    if [ -f expected/$base.atf ]; then
-        if diff -q outputs/$base.atf expected/$base.atf > /dev/null; then
+    if [ -f expected/$base.etf ]; then
+        if diff -q outputs/$base.atf expected/$base.etf > /dev/null; then
             echo "$base: PASS"
         else
             echo "$base: FAIL"
-            diff outputs/$base.atf expected/$base.atf
+            diff outputs/$base.atf expected/$base.etf
         fi
     else
         echo "No expected output for $base, skipping comparison."

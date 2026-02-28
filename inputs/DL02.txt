@@ -1,5 +1,5 @@
 login
-standard
+admin
 delete
-ACC100
+ACC999
 logout
